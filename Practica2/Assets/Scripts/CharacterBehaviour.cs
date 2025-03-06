@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.DataStructures;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Assets.Scripts
 {
@@ -12,18 +13,15 @@ namespace Assets.Scripts
         protected AbstractPathMind PathController;
         public BoardManager BoardManager { get; set; }
         protected CellInfo currentTarget;
-        
-       
+
         void Awake()
         {
 
             PathController = GetComponentInChildren<AbstractPathMind>();
             PathController.SetCharacter(this);
             LocomotionController = GetComponent<Locomotion>();
-            LocomotionController.SetCharacter(this);
-
+            LocomotionController.SetCharacter(this);        
             
-
         }
 
         void Update()
@@ -33,7 +31,10 @@ namespace Assets.Scripts
             {
 
                 var boardClone = (BoardInfo)BoardManager.boardInfo.Clone();
-                LocomotionController.SetNewDirection(PathController.GetNextMove(boardClone,LocomotionController.CurrentEndPosition(),new [] {this.currentTarget}));
+                LocomotionController.SetNewDirection(PathController.GetNextMove(boardClone,LocomotionController.CurrentEndPosition(),new [] { BoardManager.boardInfo.path[0]}));
+                
+                //Debug.Log("Current" + LocomotionController.CurrentPosition().CellId);
+                //Debug.Log("EndCurrent" + LocomotionController.CurrentEndPosition().CellId);
             }
         }
 

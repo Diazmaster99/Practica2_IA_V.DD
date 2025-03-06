@@ -204,9 +204,9 @@ namespace Assets.Scripts.DataStructures
             }
         }
 
-        public object Clone()
+        public object Clone() ////////////////////////
         {
-            var info = new BoardInfo(this.NumColumns, this.NumRows, this.manager) { CellInfos = (CellInfo[,])this.CellInfos.Clone() };
+            var info = new BoardInfo(this.NumColumns, this.NumRows, this.manager) { CellInfos = (CellInfo[,])this.CellInfos.Clone(), path = this.path, _grid = this._grid };
 
             return info;
         }
@@ -232,7 +232,7 @@ namespace Assets.Scripts.DataStructures
             pathFinding = new PathFinding(_grid, this);
             path = pathFinding.FindPath(_grid[0], Exit);
 
-            if (path != null)
+            /*if (path != null)
             {
                 for (int i = 0; i < path.Count; i++)
                 {
@@ -240,7 +240,7 @@ namespace Assets.Scripts.DataStructures
                 }
             }
             else { Debug.Log("Path is null"); }
-
+            */
             return board;
         }
     }

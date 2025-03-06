@@ -24,7 +24,6 @@ public class PathFinding
         bool startLocated = false;
         bool endLocated = false;
 
-        //end = boardInfo.Exit;
         //Debug.Log(start.CellId);
         //Debug.Log(end.CellId);
         for (int i = 0; i < grid1.Count; i++)
@@ -41,22 +40,6 @@ public class PathFinding
                 endLocated = true;
             }
         }
-
-        /*for (int i = 0; i < _grid.Count; i++)
-        {
-            if (startLocated && endLocated) break;
-            if (grid1[i].GetCellID() == start)
-            {
-                _startCell = _grid[i];
-                startLocated = true;
-            }
-            if (_grid[i].GetCellID() == end)
-            {
-                _endCell = _grid[i];
-                endLocated = true;
-            }
-        }*/
-
 
         //Iniciar listas y añadir la primera a la openList
         List<CellInfo> openList = new List<CellInfo> { start };
@@ -121,16 +104,10 @@ public class PathFinding
 
     private float CalculateDistanceCost(CellInfo actualCell, CellInfo endCell)
     {
-        
-        //float straightCost = 1;
 
         float xDistance = Mathf.Abs(actualCell.RowId - endCell.RowId);
         float yDistance = Mathf.Abs(actualCell.ColumnId - endCell.ColumnId);
-        //float remaining = Math.Abs(xDistance - yDistance);
-        //Debug.Log("xDistance:" + xDistance); //3
-        //Debug.Log("yDistance:" + yDistance); //2
-        //Debug.Log("Remaining:" + remaining); //2
-        //Debug.Log("total" + straightCost * remaining); //1
+
         return xDistance + yDistance;
     }
 
@@ -164,10 +141,7 @@ public class PathFinding
             //SUP
             if (grid[i].RowId == x && grid[i].ColumnId == y + 1 && (grid[i].Walkable || grid[i].CellId == boardInfo.Exit.CellId)) neighboursList.Add(grid[i]);      
         }
-        //for (int i = 0; i < neighboursList.Count; i++)
-        //{
-        //    Debug.Log(neighboursList[i].CellId);
-        //}
+     
         return neighboursList;
     }
 
