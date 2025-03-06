@@ -23,7 +23,6 @@ namespace Assets.Scripts.DataStructures
 
         public static PathFinding pathFinding;
         private BoardManager manager;
-        private Locomotion _locomotion;
         
         public int NumColumns { get; private set; }
         public int NumRows { get; private set; }
@@ -280,7 +279,7 @@ namespace Assets.Scripts.DataStructures
             {
                 for (var i = 0; i < Enemies.Count; i++)
                 {
-                    _cost = pathFinding.CalculateDistanceCost(_locomotion.CurrentPosition(), Enemies[i].CurrentPosition());
+                    _cost = pathFinding.CalculateDistanceCost(_grid[0], Enemies[i].CurrentPosition());
                     if (_newCost > _cost)
                     {
                         i++;
@@ -291,9 +290,9 @@ namespace Assets.Scripts.DataStructures
                         enemyNumber = i;
                     }
                 }
-                path = pathFinding.FindPath(_locomotion.CurrentPosition(), Enemies[enemyNumber].CurrentPosition());
+                path = pathFinding.FindPath(_grid[0], Enemies[enemyNumber].CurrentPosition());
             } while (Enemies.Count == 0);
-            path = pathFinding.FindPath(_locomotion.CurrentPosition(), Exit);
+            path = pathFinding.FindPath(_grid[0], Exit);
         }
 
         //private void PathFindingItems(PathFinding pathFinding)

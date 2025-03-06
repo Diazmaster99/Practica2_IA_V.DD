@@ -29,7 +29,8 @@ namespace Assets.Scripts
             if (LocomotionController.MoveNeed)
             {
                 var boardClone = (BoardInfo)BoardManager.boardInfo.Clone();
-                LocomotionController.SetNewDirection(PathController.GetNextMove(boardClone,LocomotionController.CurrentEndPosition(), null));
+                LocomotionController.SetNewDirection(PathController.GetNextMove(boardClone,LocomotionController.CurrentEndPosition(), new[] { BoardManager.boardInfo.path[0] }
+));
                 
                 //Debug.Log("Current" + LocomotionController.CurrentPosition().CellId);
                 //Debug.Log("EndCurrent" + LocomotionController.CurrentEndPosition().CellId);
