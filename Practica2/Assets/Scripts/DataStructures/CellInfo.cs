@@ -14,10 +14,11 @@ namespace Assets.Scripts.DataStructures
         public int ColumnId { get; private set; }
 
         public float _hCost { get; set; }
-
-        public float _fCost { get; set; }
-        public string CellId { get { return "" + this.RowId + "," + this.ColumnId; } }
         public float _gCost { get; set; }  //G Cost
+        public float _fCost => _hCost + _gCost;
+
+        public string CellId { get { return "" + this.RowId + "," + this.ColumnId; } }
+        
         public bool Walkable { get; set; }
 
         public CellInfo(int col, int row)
@@ -45,11 +46,6 @@ namespace Assets.Scripts.DataStructures
         public void SetHCost(float value)
         {
             _hCost = value;
-        }
-
-        public void CalculateFCost()
-        {
-            _fCost = _gCost + _hCost;
         }
 
         public float GetFCost()
