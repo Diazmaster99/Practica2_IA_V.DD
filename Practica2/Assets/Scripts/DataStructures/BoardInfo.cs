@@ -234,19 +234,22 @@ namespace Assets.Scripts.DataStructures
             pathFinding = new PathFinding(_grid, this);
             int _object = 0;
 
-            if(Enemies.Count != 0)
+            if (Enemies.Count != 0)
             {
+                Debug.LogWarning("Enemies.Count: " + Enemies.Count);
                 _object = 1;
             }
-            if(ItemsOnBoard.Count != 0)
+            if (ItemsOnBoard.Count != 0 && ItemsOnBoard.Count != 1) //Exit is an Item
             {
+                //Debug.LogWarning("ItemCount: " + ItemsOnBoard.Count);
                 _object = 2;
             }
-          
+            Debug.LogWarning("_object: " + _object);
+
             switch (_object)
             {
                 case 1:
-                    PathFindingEnemies(pathFinding);
+                    //PathFindingEnemies(pathFinding);
                     break;
                 case 2:
                     //PathFindingItems(pathFinding);

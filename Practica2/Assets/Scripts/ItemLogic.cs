@@ -29,7 +29,7 @@ namespace Assets.Scripts
 
         public void Start()
         {
-            Debug.Log(Tag+ ">"+ RequieredTags);
+            Debug.Log(Tag + ">" + RequieredTags);
             
         }
         void OnTriggerEnter2D(Collider2D collider2D)
