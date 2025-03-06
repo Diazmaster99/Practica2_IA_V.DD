@@ -233,6 +233,7 @@ namespace Assets.Scripts.DataStructures
 
             pathFinding = new PathFinding(_grid, this);
             int _object = 0;
+
             if(Enemies.Count != 0)
             {
                 _object = 1;
@@ -241,17 +242,17 @@ namespace Assets.Scripts.DataStructures
             {
                 _object = 2;
             }
-
+          
             switch (_object)
             {
-                case 0:
-                    path = pathFinding.FindPath(_locomotion.CurrentEndPosition(), Exit);
-                    break;
                 case 1:
                     PathFindingEnemies(pathFinding);
                     break;
-                default:
+                case 2:
                     //PathFindingItems(pathFinding);
+                    break;
+                default:
+                    path = pathFinding.FindPath(_grid[0], Exit);
                     break;
             }
                 
@@ -276,7 +277,7 @@ namespace Assets.Scripts.DataStructures
             {
                 for (var i = 0; i < Enemies.Count; i++)
                 {
-                    _cost = pathFinding.CalculateDistanceCost(_locomotion.CurrentEndPosition(), Enemies[i].CurrentPosition());
+                    _cost = pathFinding.CalculateDistanceCost(_locomotion.CurrentPosition(), Enemies[i].CurrentPosition());
                     if (_newCost > _cost)
                     {
                         i++;
@@ -287,10 +288,11 @@ namespace Assets.Scripts.DataStructures
                         enemyNumber = i;
                     }
                 }
-                path = pathFinding.FindPath(_locomotion.CurrentEndPosition(), Enemies[enemyNumber].CurrentPosition());
-            } while (Enemies.Count != 0);
-            path = pathFinding.FindPath(_locomotion.CurrentEndPosition(), Exit);
+                path = pathFinding.FindPath(_locomotion.CurrentPosition(), Enemies[enemyNumber].CurrentPosition());
+            } while (Enemies.Count == 0);
+            path = pathFinding.FindPath(_locomotion.CurrentPosition(), Exit);
         }
+
         //private void PathFindingItems(PathFinding pathFinding)
         //{
         //    float _cost = 0;
