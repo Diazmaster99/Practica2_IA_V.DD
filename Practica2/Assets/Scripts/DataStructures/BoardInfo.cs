@@ -23,6 +23,8 @@ namespace Assets.Scripts.DataStructures
 
         public static PathFinding pathFinding;
         private BoardManager manager;
+        private Locomotion _locomotion;
+        
         public int NumColumns { get; private set; }
         public int NumRows { get; private set; }
         public CellInfo[,] CellInfos { get; set; }
@@ -230,7 +232,29 @@ namespace Assets.Scripts.DataStructures
             }
 
             pathFinding = new PathFinding(_grid, this);
-            path = pathFinding.FindPath(_grid[0], Exit);
+            int _object = 0;
+            if(Enemies.Count != 0)
+            {
+                _object = 1;
+            }
+            if(ItemsOnBoard.Count != 0)
+            {
+                _object = 2;
+            }
+
+            switch (_object)
+            {
+                case 0:
+                    path = pathFinding.FindPath(_locomotion.CurrentEndPosition(), Exit);
+                    break;
+                case 1:
+                    PathFindingEnemies(pathFinding);
+                    break;
+                default:
+                    PathFindingItems(pathFinding);
+                    break;
+            }
+                
 
             /*if (path != null)
             {
@@ -242,6 +266,49 @@ namespace Assets.Scripts.DataStructures
             else { Debug.Log("Path is null"); }
             */
             return board;
+        }
+        private void PathFindingEnemies(PathFinding pathFinding)
+        {
+            float _cost = 0;
+            float _newCost = 0;
+            int enemyNumber = 0;
+            do
+            {
+                for (var i = 0; i < Enemies.Count; i++)
+                {
+                    _cost = pathFinding.CalculateDistanceCost(_locomotion.CurrentEndPosition(), Enemies[i].CurrentPosition());
+                    if (_newCost > _cost)
+                    {
+                        i++;
+                    }
+                    else
+                    {
+                        _newCost = _cost;
+                        enemyNumber = i;
+                    }
+                }
+                path = pathFinding.FindPath(_locomotion.CurrentEndPosition(), Enemies[enemyNumber].CurrentPosition());
+            } while (Enemies.Count != 0);
+        }
+        private void PathFindingItems(PathFinding pathFinding)
+        {
+            float _cost = 0;
+            float _newCost = 0;
+            int itemsNumber = 0;
+            for (var i = 0; i < ItemsOnBoard.Count; i++)
+            {
+                _cost = pathFinding.CalculateDistanceCost(_locomotion.CurrentEndPosition(), ItemsOnBoard[i].);
+                if (_newCost > _cost)
+                {
+                    i++;
+                }
+                else
+                {
+                    _newCost = _cost;
+                    itemsNumber = i;
+                }
+            }
+            path = pathFinding.FindPath(_locomotion.CurrentEndPosition(), ItemsOnBoard[itemsNumber].);
         }
     }
 }

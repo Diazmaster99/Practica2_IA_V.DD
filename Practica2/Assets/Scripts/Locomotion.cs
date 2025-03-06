@@ -168,7 +168,6 @@ namespace Assets.Scripts
 
         public CellInfo CurrentPosition()
         {
-            ;
             return Board.CellInfos[(int)Math.Round(transform.position.x), (int) Math.Round(transform.position.y)];
         }
         public CellInfo CurrentEndPosition()

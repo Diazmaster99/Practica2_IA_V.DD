@@ -49,14 +49,12 @@ public class PathFinding
         for (int i = 0; i < grid1.Count; i++)
         {
             grid1[i]._gCost = 1;
-            //grid1[i].CalculateFCost();
             grid1[i].SetCameFromCell(null);
         }
 
         //Inicializar primera celda
         start._gCost = 0;
         start.SetHCost(CalculateDistanceCost(start, end));
-        //start.CalculateFCost();
         
         //Debug.Log(start.CellId);
         //Debug.Log(start.WalkCost);
@@ -92,7 +90,6 @@ public class PathFinding
                     //Debug.Log(end.CellId);
                     //Debug.Log(CalculateDistanceCost(neighbourCell, end));
 
-                    //neighbourCell.CalculateFCost();
                 //}
                 if (!openList.Contains(neighbourCell)) openList.Add(neighbourCell);
             }        
@@ -101,9 +98,7 @@ public class PathFinding
         return null;
     }
 
-    
-
-    private float CalculateDistanceCost(CellInfo actualCell, CellInfo endCell)
+    public float CalculateDistanceCost(CellInfo actualCell, CellInfo endCell)
     {
 
         float xDistance = Mathf.Abs(actualCell.RowId - endCell.RowId);

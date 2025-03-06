@@ -21,7 +21,6 @@ namespace Assets.Scripts
             PathController.SetCharacter(this);
             LocomotionController = GetComponent<Locomotion>();
             LocomotionController.SetCharacter(this);        
-            
         }
 
         void Update()
