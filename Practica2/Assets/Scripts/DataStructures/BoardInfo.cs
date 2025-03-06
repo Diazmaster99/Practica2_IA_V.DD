@@ -251,7 +251,7 @@ namespace Assets.Scripts.DataStructures
                     PathFindingEnemies(pathFinding);
                     break;
                 default:
-                    PathFindingItems(pathFinding);
+                    //PathFindingItems(pathFinding);
                     break;
             }
                 
@@ -289,26 +289,27 @@ namespace Assets.Scripts.DataStructures
                 }
                 path = pathFinding.FindPath(_locomotion.CurrentEndPosition(), Enemies[enemyNumber].CurrentPosition());
             } while (Enemies.Count != 0);
+            path = pathFinding.FindPath(_locomotion.CurrentEndPosition(), Exit);
         }
-        private void PathFindingItems(PathFinding pathFinding)
-        {
-            float _cost = 0;
-            float _newCost = 0;
-            int itemsNumber = 0;
-            for (var i = 0; i < ItemsOnBoard.Count; i++)
-            {
-                _cost = pathFinding.CalculateDistanceCost(_locomotion.CurrentEndPosition(), ItemsOnBoard[i].);
-                if (_newCost > _cost)
-                {
-                    i++;
-                }
-                else
-                {
-                    _newCost = _cost;
-                    itemsNumber = i;
-                }
-            }
-            path = pathFinding.FindPath(_locomotion.CurrentEndPosition(), ItemsOnBoard[itemsNumber].);
-        }
+        //private void PathFindingItems(PathFinding pathFinding)
+        //{
+        //    float _cost = 0;
+        //    float _newCost = 0;
+        //    int itemsNumber = 0;
+        //    for (var i = 0; i < ItemsOnBoard.Count; i++)
+        //    {
+        //        _cost = pathFinding.CalculateDistanceCost(_locomotion.CurrentEndPosition(), ItemsOnBoard[i].);
+        //        if (_newCost > _cost)
+        //        {
+        //            i++;
+        //        }
+        //        else
+        //        {
+        //            _newCost = _cost;
+        //            itemsNumber = i;
+        //        }
+        //    }
+        //    path = pathFinding.FindPath(_locomotion.CurrentEndPosition(), ItemsOnBoard[itemsNumber].);
+        //}
     }
 }
