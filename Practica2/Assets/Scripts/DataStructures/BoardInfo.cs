@@ -230,33 +230,33 @@ namespace Assets.Scripts.DataStructures
                 cellGO.transform.parent = board.transform.parent;
             }
 
-            pathFinding = new PathFinding(_grid, this);
-            int _object = 0;
+            //pathFinding = new PathFinding(_grid, this);
+            //int _object = 0;
 
-            if (Enemies.Count != 0)
-            {
-                Debug.LogWarning("Enemies.Count: " + Enemies.Count);
-                _object = 1;
-            }
-            if (ItemsOnBoard.Count != 0 && ItemsOnBoard.Count != 1) //Exit is an Item
-            {
-                //Debug.LogWarning("ItemCount: " + ItemsOnBoard.Count);
-                _object = 2;
-            }
-            Debug.LogWarning("_object: " + _object);
+            //if (Enemies.Count != 0)
+            //{
+            //    Debug.LogWarning("Enemies.Count: " + Enemies.Count);
+            //    _object = 1;
+            //}
+            //if (ItemsOnBoard.Count != 0 && ItemsOnBoard.Count != 1) //Exit is an Item
+            //{
+            //    //Debug.LogWarning("ItemCount: " + ItemsOnBoard.Count);
+            //    _object = 2;
+            //}
+            //Debug.LogWarning("_object: " + _object);
 
-            switch (_object)
-            {
-                case 1:
-                    //PathFindingEnemies(pathFinding);
-                    break;
-                case 2:
-                    //PathFindingItems(pathFinding);
-                    break;
-                default:
-                    path = pathFinding.FindPath(_grid[0], Exit);
-                    break;
-            }
+            //switch (_object)
+            //{
+            //    case 1:
+            //        PathFindingEnemies(pathFinding);
+            //        break;
+            //    case 2:
+            //        //PathFindingItems(pathFinding);
+            //        break;
+            //    default:
+            //        path = pathFinding.FindPath(CharacterPosition(), Exit);
+            //        break;
+            //}
                 
 
             /*if (path != null)
@@ -270,16 +270,41 @@ namespace Assets.Scripts.DataStructures
             */
             return board;
         }
-        private void PathFindingEnemies(PathFinding pathFinding)
+        //private void PathFindingEnemies(PathFinding pathFinding)
+        //{
+        //    float _cost = 0;
+        //    float _newCost = 0;
+        //    int enemyNumber = 0;
+        //    do
+        //    {
+        //        for (var i = 0; i < Enemies.Count; i++)
+        //        {
+        //            _cost = pathFinding.CalculateDistanceCost(_grid[0], Enemies[i].CurrentPosition());
+        //            if (_newCost > _cost)
+        //            {
+        //                i++;
+        //            }
+        //            else
+        //            {
+        //                _newCost = _cost;
+        //                enemyNumber = i;
+        //            }
+        //        }
+        //        path = pathFinding.FindPath(_grid[0], Enemies[enemyNumber].CurrentPosition());
+        //    } while (Enemies.Count == 0);
+        //    path = pathFinding.FindPath(_grid[0], Exit);
+        //}
+
+        private void PathFindingItems(PathFinding pathFinding)
         {
             float _cost = 0;
             float _newCost = 0;
-            int enemyNumber = 0;
+            int itemNumber = 0;
             do
             {
-                for (var i = 0; i < Enemies.Count; i++)
+                for (var i = 0; i < ItemsOnBoard.Count; i++)
                 {
-                    _cost = pathFinding.CalculateDistanceCost(_grid[0], Enemies[i].CurrentPosition());
+                    _cost = pathFinding.CalculateDistanceCost(_grid[0], ItemsOnBoard[i].CurrentPosition());
                     if (_newCost > _cost)
                     {
                         i++;
@@ -287,33 +312,12 @@ namespace Assets.Scripts.DataStructures
                     else
                     {
                         _newCost = _cost;
-                        enemyNumber = i;
+                        itemNumber = i;
                     }
                 }
-                path = pathFinding.FindPath(_grid[0], Enemies[enemyNumber].CurrentPosition());
-            } while (Enemies.Count == 0);
+                path = pathFinding.FindPath(_grid[0], ItemsOnBoard[itemNumber].CurrentPosition());
+            } while (ItemsOnBoard.Count == 0);
             path = pathFinding.FindPath(_grid[0], Exit);
         }
-
-        //private void PathFindingItems(PathFinding pathFinding)
-        //{
-        //    float _cost = 0;
-        //    float _newCost = 0;
-        //    int itemsNumber = 0;
-        //    for (var i = 0; i < ItemsOnBoard.Count; i++)
-        //    {
-        //        _cost = pathFinding.CalculateDistanceCost(_locomotion.CurrentEndPosition(), ItemsOnBoard[i].);
-        //        if (_newCost > _cost)
-        //        {
-        //            i++;
-        //        }
-        //        else
-        //        {
-        //            _newCost = _cost;
-        //            itemsNumber = i;
-        //        }
-        //    }
-        //    path = pathFinding.FindPath(_locomotion.CurrentEndPosition(), ItemsOnBoard[itemsNumber].);
-        //}
     }
 }

@@ -7,6 +7,9 @@ namespace Assets.Scripts
     {
         protected CharacterBehaviour character;
 
+        protected CellInfo CharacterPosition() => this.character.CharacterPosition();
+        protected CellInfo CurrentTarget;
+        
         public abstract Locomotion.MoveDirection GetNextMove(BoardInfo boardInfo, CellInfo currentPos, CellInfo[] goals);
 
         public void SetCharacter(CharacterBehaviour characterBehaviour)

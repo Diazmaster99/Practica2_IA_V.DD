@@ -14,6 +14,8 @@ namespace Assets.Scripts
         public BoardManager BoardManager { get; set; }
         protected CellInfo currentTarget;
 
+        public CellInfo CharacterPosition() => this.LocomotionController.CurrentPosition();
+
         void Awake()
         {
 
@@ -29,8 +31,7 @@ namespace Assets.Scripts
             if (LocomotionController.MoveNeed)
             {
                 var boardClone = (BoardInfo)BoardManager.boardInfo.Clone();
-                LocomotionController.SetNewDirection(PathController.GetNextMove(boardClone,LocomotionController.CurrentEndPosition(), new[] { BoardManager.boardInfo.path[0] }
-));
+                LocomotionController.SetNewDirection(PathController.GetNextMove(boardClone,LocomotionController.CurrentEndPosition(), new[] { this.currentTarget }));
                 
                 //Debug.Log("Current" + LocomotionController.CurrentPosition().CellId);
                 //Debug.Log("EndCurrent" + LocomotionController.CurrentEndPosition().CellId);

@@ -172,6 +172,11 @@ namespace Assets.Scripts
         }
         public CellInfo CurrentEndPosition()
         {
+            //if (end != null)
+            //    return end;
+            //else
+            //    return CurrentPosition();
+
             return end ?? CurrentPosition();
         }
 

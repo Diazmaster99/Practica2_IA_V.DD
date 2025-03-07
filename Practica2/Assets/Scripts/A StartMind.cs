@@ -2,12 +2,99 @@ using Assets.Scripts;
 using Assets.Scripts.DataStructures;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class AStartMind : AbstractPathMind
 {
     public static int pathNextCell = 0;
     public CharacterBehaviour characterBehaviour;
+    private PathFinding pathFinding;
+    public List<CellInfo> _grid = new List<CellInfo>();
+    public List<CellInfo> path = new List<CellInfo>();
+
+    private BoardInfo BoardInfo => GameManager.instance.BoardManager.boardInfo;
+    private CellInfo Exit => this.BoardInfo.Exit;
+    private List<EnemyBehaviour> Enemies => this.BoardInfo.Enemies;
+    private List<PlaceableItem> ItemsOnBoard => this.BoardInfo.ItemsOnBoard;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        pathFinding = new PathFinding(_grid, BoardInfo);
+        int _object = 0;
+
+        if (Enemies.Count != 0)
+        {
+            Debug.LogWarning("Enemies.Count: " + Enemies.Count);
+            _object = 1;
+        }
+        if (ItemsOnBoard.Count != 0 && ItemsOnBoard.Count != 1) //Exit is an Item
+        {
+            //Debug.LogWarning("ItemCount: " + ItemsOnBoard.Count);
+            _object = 2;
+        }
+        Debug.LogWarning("_object: " + _object);
+
+        switch (_object)
+        {
+            case 1:
+                PathFindingEnemies(pathFinding);
+                break;
+            case 2:
+                //PathFindingItems(pathFinding);
+                break;
+            default:
+                path = pathFinding.FindPath(CharacterPosition(), Exit);
+                break;
+        }
+    }
+
+    private void PathFindingEnemies(PathFinding pathFinding)
+    {
+        float _cost = 0;
+        float _newCost = 0;
+        int enemyNumber = 0;
+        do
+        {
+            for (var i = 0; i < Enemies.Count; i++)
+            {
+                _cost = pathFinding.CalculateDistanceCost(CharacterPosition(), Enemies[i].CurrentPosition());
+                if (_newCost > _cost)
+                {
+                    i++;
+                }
+                else
+                {
+                    _newCost = _cost;
+                    enemyNumber = i;
+                }
+            }
+            path = pathFinding.FindPath(CharacterPosition(), Enemies[enemyNumber].CurrentPosition());
+        } while (Enemies.Count == 0);
+        path = pathFinding.FindPath(CharacterPosition(), Exit);
+    }
+
+    private void CalculateCurrentTarget()
+    {
+        var enemies = BoardInfo.Enemies;
+        if(enemies.Any())
+        {
+            //Coger al enemigo mas cercano 
+            //currentTarget = ese enemigo mas cercano
+            this.character.SetCurrentTarget();
+        }
+        else
+        {
+            //Coger los goals (casillas que tengan llave + salida)
+            //Coger el goal mas cercano
+            //currentTarget = esa
+        }
+            
+    }
+
+
     public override Locomotion.MoveDirection GetNextMove(BoardInfo boardInfo, CellInfo currentPos, CellInfo[] goals)
     {
         int direccion = 0;   
@@ -36,11 +123,7 @@ public class AStartMind : AbstractPathMind
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    
 
     // Update is called once per frame
     void Update()

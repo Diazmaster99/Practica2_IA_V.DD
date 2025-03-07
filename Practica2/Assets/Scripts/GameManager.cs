@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Assets.Scripts
 {
     public class GameManager : MonoBehaviour
-    {
+    {   
 
         public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
         public BoardManager BoardManager { get; set; }                      //Store a reference to our Board which will set up the level.
