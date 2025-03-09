@@ -6,12 +6,20 @@ namespace Assets.Scripts.DataStructures
 {
     public class PlaceableItem : ICloneable
     {
+        private BoardInfo BoardInfo => GameManager.instance.BoardManager.boardInfo;
+        private List<PlaceableItem> ItemsOnBoard => this.BoardInfo.ItemsOnBoard;
+
         public enum ItemType
         {
             Goal,
             Player,
             Enemy,
             Lever
+        }
+
+        public CellInfo GetItemsPosition()
+        {
+            return BoardManager.boardInfo.CellInfos[(int)transform.position.x, (int)transform.position.y];
         }
 
         public PlaceableItem(string tag, ItemType type)

@@ -41,10 +41,7 @@ namespace Assets.Scripts.DataStructures
 
         public List<PlaceableItem> ItemsOnBoard
         {
-            get
-            {
-                return (from CellInfo cell in this.CellInfos where cell.ItemInCell != null select cell.ItemInCell).ToList();
-            }
+            get{ return (from CellInfo cell in this.CellInfos where cell.ItemInCell != null select cell.ItemInCell).ToList(); }
         }
 
         public CellInfo Exit

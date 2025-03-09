@@ -13,7 +13,6 @@ public class AStartMind : AbstractPathMind
     private PathFinding pathFinding;
     public List<CellInfo> _grid = new List<CellInfo>();
     public List<CellInfo> path = new List<CellInfo>();
-
     private BoardInfo BoardInfo => GameManager.instance.BoardManager.boardInfo;
     private CellInfo Exit => this.BoardInfo.Exit;
     private List<EnemyBehaviour> Enemies => this.BoardInfo.Enemies;
@@ -30,11 +29,12 @@ public class AStartMind : AbstractPathMind
             Debug.LogWarning("Enemies.Count: " + Enemies.Count);
             _object = 1;
         }
-        if (ItemsOnBoard.Count != 0 && ItemsOnBoard.Count != 1) //Exit is an Item
+        if (ItemsOnBoard.Count != 0)
         {
-            //Debug.LogWarning("ItemCount: " + ItemsOnBoard.Count);
+            Debug.LogWarning("ItemCount: " + ItemsOnBoard.Count);
             _object = 2;
         }
+
         Debug.LogWarning("_object: " + _object);
 
         switch (_object)
@@ -43,7 +43,7 @@ public class AStartMind : AbstractPathMind
                 PathFindingEnemies(pathFinding);
                 break;
             case 2:
-                //PathFindingItems(pathFinding);
+                PathFindingItems(pathFinding);
                 break;
             default:
                 this.character.SetCurrentTarget(Exit);
@@ -78,6 +78,33 @@ public class AStartMind : AbstractPathMind
         path = pathFinding.FindPath(CharacterPosition(), Exit);
     }
 
+    private void PathFindingItems(PathFinding pathFinding)
+    {
+        float _cost = 0;
+        float _newCost = 0;
+        int itemNumber = 0;
+        do
+        {
+            for (var i = 0; i < ItemsOnBoard.Count; i++)
+            {
+                _cost = pathFinding.CalculateDistanceCost(CharacterPosition(), ItemsOnBoard[i].CurrentPosition());
+                if (_newCost > _cost)
+                {
+                    i++;
+                }
+
+                else
+                {
+                    _newCost = _cost;
+                    itemNumber = i;
+                }
+            }
+            CalculateCurrentTarget(itemNumber);
+            path = pathFinding.FindPath(CharacterPosition(), Enemies[itemNumber].CurrentPosition());
+        } while (ItemsOnBoard.Count == 0);
+        path = pathFinding.FindPath(CharacterPosition(), Exit);
+    }
+
     private void CalculateCurrentTarget(int targetNumber)
     {
         var enemies = BoardInfo.Enemies;
@@ -95,30 +122,6 @@ public class AStartMind : AbstractPathMind
         }
             
     }
-    //private void PathFindingItems(PathFinding pathFinding)
-    //{
-    //    float _cost = 0;
-    //    float _newCost = 0;
-    //    int itemNumber = 0;
-    //    do
-    //    {
-    //        for (var i = 0; i < ItemsOnBoard.Count; i++)
-    //        {
-    //            _cost = pathFinding.CalculateDistanceCost(_grid[0], ItemsOnBoard[i].CurrentPosition());
-    //            if (_newCost > _cost)
-    //            {
-    //                i++;
-    //            }
-    //            else
-    //            {
-    //                _newCost = _cost;
-    //                itemNumber = i;
-    //            }
-    //        }
-    //        path = pathFinding.FindPath(_grid[0], ItemsOnBoard[itemNumber].CurrentPosition());
-    //    } while (ItemsOnBoard.Count == 0);
-    //    path = pathFinding.FindPath(_grid[0], Exit);
-    //}
 
     public override Locomotion.MoveDirection GetNextMove(BoardInfo boardInfo, CellInfo currentPos, CellInfo[] goals)
     {
@@ -134,10 +137,11 @@ public class AStartMind : AbstractPathMind
 
             pathNextCell = pathNextCell + 1;
         }
-       
+
         switch (direccion)
         {
-            case 1: return Locomotion.MoveDirection.Up;
+
+            case 1: return Locomotion.MoveDirection.Up; 
             case 2: return Locomotion.MoveDirection.Down;
             case 3: return Locomotion.MoveDirection.Right;
             case 4: return Locomotion.MoveDirection.Left;
