@@ -295,29 +295,29 @@ namespace Assets.Scripts.DataStructures
         //    path = pathFinding.FindPath(_grid[0], Exit);
         //}
 
-        private void PathFindingItems(PathFinding pathFinding)
-        {
-            float _cost = 0;
-            float _newCost = 0;
-            int itemNumber = 0;
-            do
-            {
-                for (var i = 0; i < ItemsOnBoard.Count; i++)
-                {
-                    _cost = pathFinding.CalculateDistanceCost(_grid[0], ItemsOnBoard[i].CurrentPosition());
-                    if (_newCost > _cost)
-                    {
-                        i++;
-                    }
-                    else
-                    {
-                        _newCost = _cost;
-                        itemNumber = i;
-                    }
-                }
-                path = pathFinding.FindPath(_grid[0], ItemsOnBoard[itemNumber].CurrentPosition());
-            } while (ItemsOnBoard.Count == 0);
-            path = pathFinding.FindPath(_grid[0], Exit);
-        }
+        //private void PathFindingItems(PathFinding pathFinding)
+        //{
+        //    float _cost = 0;
+        //    float _newCost = 0;
+        //    int itemNumber = 0;
+        //    do
+        //    {
+        //        for (var i = 0; i < ItemsOnBoard.Count; i++)
+        //        {
+        //            _cost = pathFinding.CalculateDistanceCost(_grid[0], ItemsOnBoard[i].CurrentPosition());
+        //            if (_newCost > _cost)
+        //            {
+        //                i++;
+        //            }
+        //            else
+        //            {
+        //                _newCost = _cost;
+        //                itemNumber = i;
+        //            }
+        //        }
+        //        path = pathFinding.FindPath(_grid[0], ItemsOnBoard[itemNumber].CurrentPosition());
+        //    } while (ItemsOnBoard.Count == 0);
+        //    path = pathFinding.FindPath(_grid[0], Exit);
+        //}
     }
 }

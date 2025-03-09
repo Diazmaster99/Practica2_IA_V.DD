@@ -46,6 +46,7 @@ public class AStartMind : AbstractPathMind
                 //PathFindingItems(pathFinding);
                 break;
             default:
+                this.character.SetCurrentTarget(Exit);
                 path = pathFinding.FindPath(CharacterPosition(), Exit);
                 break;
         }
@@ -71,19 +72,20 @@ public class AStartMind : AbstractPathMind
                     enemyNumber = i;
                 }
             }
+            CalculateCurrentTarget(enemyNumber);
             path = pathFinding.FindPath(CharacterPosition(), Enemies[enemyNumber].CurrentPosition());
         } while (Enemies.Count == 0);
         path = pathFinding.FindPath(CharacterPosition(), Exit);
     }
 
-    private void CalculateCurrentTarget()
+    private void CalculateCurrentTarget(int targetNumber)
     {
         var enemies = BoardInfo.Enemies;
         if(enemies.Any())
         {
             //Coger al enemigo mas cercano 
             //currentTarget = ese enemigo mas cercano
-            this.character.SetCurrentTarget();
+            this.character.SetCurrentTarget(Enemies[targetNumber].CurrentPosition());
         }
         else
         {
@@ -93,7 +95,30 @@ public class AStartMind : AbstractPathMind
         }
             
     }
-
+    //private void PathFindingItems(PathFinding pathFinding)
+    //{
+    //    float _cost = 0;
+    //    float _newCost = 0;
+    //    int itemNumber = 0;
+    //    do
+    //    {
+    //        for (var i = 0; i < ItemsOnBoard.Count; i++)
+    //        {
+    //            _cost = pathFinding.CalculateDistanceCost(_grid[0], ItemsOnBoard[i].CurrentPosition());
+    //            if (_newCost > _cost)
+    //            {
+    //                i++;
+    //            }
+    //            else
+    //            {
+    //                _newCost = _cost;
+    //                itemNumber = i;
+    //            }
+    //        }
+    //        path = pathFinding.FindPath(_grid[0], ItemsOnBoard[itemNumber].CurrentPosition());
+    //    } while (ItemsOnBoard.Count == 0);
+    //    path = pathFinding.FindPath(_grid[0], Exit);
+    //}
 
     public override Locomotion.MoveDirection GetNextMove(BoardInfo boardInfo, CellInfo currentPos, CellInfo[] goals)
     {
