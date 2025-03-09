@@ -86,7 +86,7 @@ public class AStartMind : AbstractPathMind
         {
             for (var i = 0; i < ItemsOnBoard.Count; i++)
             {
-                _cost = pathFinding.CalculateDistanceCost(CharacterPosition(), ItemsOnBoard[i].CurrentPosition());
+                _cost = pathFinding.CalculateDistanceCost(CharacterPosition(), ItemsOnBoard[i].GetItemsPosition());
                 if (_newCost > _cost)
                 {
                     i++;
@@ -99,7 +99,7 @@ public class AStartMind : AbstractPathMind
                 }
             }
             CalculateCurrentTarget(itemNumber);
-            path = pathFinding.FindPath(CharacterPosition(), Enemies[itemNumber].CurrentPosition());
+            path = pathFinding.FindPath(CharacterPosition(), ItemsOnBoard[itemNumber].GetItemsPosition());
         } while (ItemsOnBoard.Count == 0);
         path = pathFinding.FindPath(CharacterPosition(), Exit);
     }

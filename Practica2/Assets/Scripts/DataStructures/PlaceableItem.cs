@@ -19,7 +19,7 @@ namespace Assets.Scripts.DataStructures
 
         public CellInfo GetItemsPosition()
         {
-            return BoardManager.boardInfo.CellInfos[(int)transform.position.x, (int)transform.position.y];
+            return null;
         }
 
         public PlaceableItem(string tag, ItemType type)
