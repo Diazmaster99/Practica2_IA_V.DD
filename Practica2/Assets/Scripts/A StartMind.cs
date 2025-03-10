@@ -21,7 +21,7 @@ public class AStartMind : AbstractPathMind
     // Start is called before the first frame update
     void Start()
     {
-        pathFinding = new PathFinding(_grid, BoardInfo);
+        pathFinding = new PathFinding(BoardInfo);
         int _object = 0;
 
         if (Enemies.Count != 0)
@@ -46,7 +46,8 @@ public class AStartMind : AbstractPathMind
                 PathFindingItems(pathFinding);
                 break;
             default:
-                path = pathFinding.FindPath(this.BoardInfo._grid[0], Exit);
+                //path = pathFinding.FindPath(this.BoardInfo._grid[0], Exit);
+                path = pathFinding.FindPath_BFS(this.BoardInfo._grid[0], Exit);
                 break;
         }
     }

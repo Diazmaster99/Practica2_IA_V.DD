@@ -15,7 +15,13 @@ public class PathFinding
 
     public PathFinding(List<CellInfo> grid1, BoardInfo boardInfo)
     {
-        this.grid1 = grid1;
+        this.grid1 = boardInfo._grid;
+        this.boardInfo = boardInfo;
+    }
+
+    public PathFinding(BoardInfo boardInfo)
+    {
+        this.grid1 = boardInfo._grid;
         this.boardInfo = boardInfo;
     }
 
@@ -98,6 +104,45 @@ public class PathFinding
         return null;
     }
 
+    public List<CellInfo> FindPath_BFS(CellInfo start, CellInfo end)
+    {
+
+
+        HashSet<CellInfo> visited = new HashSet<CellInfo>();
+        visited.Add(start);
+
+        Queue<CellInfo> frontier = new Queue<CellInfo>();
+        frontier.Enqueue(start);
+
+        start.SetCameFromCell(null);
+
+        while (frontier.Count > 0)
+        {
+            CellInfo current = frontier.Dequeue();
+
+
+            if (current == end)
+            {
+                break;
+            }
+
+            foreach (var neighbor in GetNeighboursList(current, grid1))
+            {
+                if (!visited.Contains(neighbor))
+                {
+                    visited.Add(neighbor);
+                    frontier.Enqueue(neighbor);
+
+                    neighbor.SetCameFromCell(current);
+
+                }
+            }
+        }
+
+        List<CellInfo> path = CalculatePath(end);
+
+        return path;
+    }
     public float CalculateDistanceCost(CellInfo actualCell, CellInfo endCell)
     {
 
