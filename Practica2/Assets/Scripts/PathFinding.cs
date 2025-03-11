@@ -117,22 +117,22 @@ public class PathFinding
 
         while (frontier.Count > 0)
         {
-            CellInfo current = frontier.Dequeue();
+            CellInfo currentCell = frontier.Dequeue();
 
 
-            if (current == end)
+            if (currentCell == end)
             {
                 break;
             }
 
-            foreach (var neighbor in GetNeighboursList(current, grid1))
+            foreach (var neighborCell in GetNeighboursList(currentCell, grid1))
             {
-                if (!visited.Contains(neighbor))
+                if (!visited.Contains(neighborCell))
                 {
-                    visited.Add(neighbor);
-                    frontier.Enqueue(neighbor);
+                    visited.Add(neighborCell);
+                    frontier.Enqueue(neighborCell);
 
-                    neighbor.SetCameFromCell(current);
+                    neighborCell.SetCameFromCell(currentCell);
 
                 }
             }
