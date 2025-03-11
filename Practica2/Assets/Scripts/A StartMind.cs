@@ -37,7 +37,7 @@ public class AStartMind : AbstractPathMind
 
         Debug.LogWarning("_object: " + _object);
 
-        switch (_object)
+        switch (0)
         {
             case 1:
                 PathFindingEnemies(pathFinding);
@@ -46,8 +46,8 @@ public class AStartMind : AbstractPathMind
                 PathFindingItems(pathFinding);
                 break;
             default:
-                path = pathFinding.FindPath(this.BoardInfo._grid[0], Exit);
-                //path = pathFinding.FindPath_BFS(this.BoardInfo._grid[0], Exit);
+                //path = pathFinding.FindPath(this.BoardInfo._grid[0], Exit);
+                path = pathFinding.FindPath_BFS(this.BoardInfo._grid[0], Exit);
                 break;
         }
     }
