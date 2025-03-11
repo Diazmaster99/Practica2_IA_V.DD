@@ -17,6 +17,7 @@ public class AStartMind : AbstractPathMind
     private CellInfo Exit => this.BoardInfo.Exit;
     private List<EnemyBehaviour> Enemies => this.BoardInfo.Enemies;
     private List<PlaceableItem> ItemsOnBoard => this.BoardInfo.ItemsOnBoard;
+    public List<GameObject> itemsList = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -82,17 +83,20 @@ public class AStartMind : AbstractPathMind
     {
         float _cost = 0;
         float _newCost = 0;
-        int itemNumber = 0;
-        do
+        int itemIndex;
+        GameObject[] items = PopulateItemsList();
+        int itemNumber = items.Length;
+
+        while (itemNumber >= 0)
         {
-            for (var i = 0; i < ItemsOnBoard.Count; i++)
+            for (int i = 0; i < items.Length; i++)
             {
                 _cost = pathFinding.CalculateDistanceCost(CharacterPosition(), ItemsOnBoard[i].GetItemsPosition());
+
                 if (_newCost > _cost)
                 {
                     i++;
                 }
-
                 else
                 {
                     _newCost = _cost;
@@ -100,9 +104,17 @@ public class AStartMind : AbstractPathMind
                 }
             }
             CalculateCurrentTarget(itemNumber);
-            path = pathFinding.FindPath(CharacterPosition(), ItemsOnBoard[itemNumber].GetItemsPosition());
-        } while (ItemsOnBoard.Count == 0);
+            path = pathFinding.FindPath(CharacterPosition(), Enemies[itemNumber].CurrentPosition());
+        }
         path = pathFinding.FindPath(CharacterPosition(), Exit);
+    }
+
+    public GameObject[] PopulateItemsList()
+    {
+        GameObject[] itemArray = GameObject.FindGameObjectsWithTag("Item");
+        itemsList.Clear();
+        itemsList.AddRange(itemArray);
+        return itemArray;
     }
 
     private void CalculateCurrentTarget(int targetNumber)

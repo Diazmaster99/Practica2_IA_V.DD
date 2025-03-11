@@ -8,6 +8,7 @@ namespace Assets.Scripts.DataStructures
     {
         private BoardInfo BoardInfo => GameManager.instance.BoardManager.boardInfo;
         private List<PlaceableItem> ItemsOnBoard => this.BoardInfo.ItemsOnBoard;
+        private AStartMind aStartMind;
 
         public enum ItemType
         {
@@ -19,6 +20,7 @@ namespace Assets.Scripts.DataStructures
 
         public CellInfo GetItemsPosition()
         {
+            GameObject[] items = aStartMind.PopulateItemsList();
             return null;
         }
 
