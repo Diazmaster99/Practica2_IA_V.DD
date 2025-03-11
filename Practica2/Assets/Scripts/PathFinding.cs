@@ -54,7 +54,7 @@ public class PathFinding
         //Setear todas las celdas y borrar caminos previos
         for (int i = 0; i < grid1.Count; i++)
         {
-            grid1[i]._gCost = 1;
+            grid1[i]._gCost = float.MaxValue;
             grid1[i].SetCameFromCell(null);
         }
 
@@ -62,10 +62,6 @@ public class PathFinding
         start._gCost = 0;
         start.SetHCost(CalculateDistanceCost(start, end));
         
-        //Debug.Log(start.CellId);
-        //Debug.Log(start.WalkCost);
-        //Debug.Log(start._hCost);
-        //Debug.Log(start._fCost);
         while (openList.Count > 0)
         {
             //Seleccionar la celda con menor coste F de la openList
@@ -86,21 +82,24 @@ public class PathFinding
                 if (closedList.Contains(neighbourCell)) continue;
 
                 //Setear las celdas adyacentes que se van comprobando /////////////////////////////////////
-                float tentativeCost = currentCell._gCost + CalculateDistanceCost(currentCell,neighbourCell) ; // 1 + 1 Nuevo coste G
-                //if (tentativeCost > neighbourCell._gCost) //2 > 1 
-                //{
+                //int newNeighborCost = current.Cost + neighbor.Weight;
+                //if (newNeighborCost < neighbor.Cost)
+                float tentativeCost = currentCell._gCost + 1;// CalculateDistanceCost(currentCell,neighbourCell) ; // 0 + 1 Nuevo coste G
+                
+                if (tentativeCost < neighbourCell._gCost) 
+                {
                     neighbourCell.SetCameFromCell(currentCell);
                     neighbourCell._gCost = tentativeCost;
                     neighbourCell.SetHCost(CalculateDistanceCost(neighbourCell, end));
-                    //Debug.Log(neighbourCell.CellId);
-                    //Debug.Log(end.CellId);
-                    //Debug.Log(CalculateDistanceCost(neighbourCell, end));
-
-                //}
-                if (!openList.Contains(neighbourCell)) openList.Add(neighbourCell);
+                }
+                if (!openList.Contains(neighbourCell))
+                {
+                    openList.Add(neighbourCell);
+                }
             }        
         }
         //Si llegamos aqui es que no se ha encontrado camino posible
+        Debug.Log("No se ha encontrado camino");
         return null;
     }
 
@@ -155,9 +154,10 @@ public class PathFinding
     private CellInfo GetLowestFCostCell(List<CellInfo> openList)
     {
         CellInfo lowestFCostCell = openList[0];
+
         for (int i = 0; i < openList.Count; i++)
         {
-            if (openList[i].GetFCost() < lowestFCostCell.GetFCost()) lowestFCostCell = openList[i];
+            if (openList[i]._fCost < lowestFCostCell._fCost) lowestFCostCell = openList[i];
         }
         return lowestFCostCell;
     }

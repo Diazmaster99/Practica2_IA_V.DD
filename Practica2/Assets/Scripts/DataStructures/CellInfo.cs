@@ -48,10 +48,6 @@ namespace Assets.Scripts.DataStructures
             _hCost = value;
         }
 
-        public float GetFCost()
-        {
-            return _fCost;
-        }
         public void SetCameFromCell(CellInfo previousCell)
         {
             _cameFromCell = previousCell;
