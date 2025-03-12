@@ -74,6 +74,7 @@ public class AStartMind : AbstractPathMind
             }
             CalculateCurrentTarget(enemyNumber);
             path = pathFinding.FindPath(CharacterPosition(), Enemies[enemyNumber].CurrentPosition());
+            Debug.Log(Enemies[enemyNumber]);
         }
         else
         {
@@ -88,7 +89,7 @@ public class AStartMind : AbstractPathMind
         var items = PopulateItemsList();
         int itemNumber = items.Length;
 
-        while (itemNumber >= 0)
+        if (itemNumber != 0)
         {
             for (int i = 0; i < items.Length; i++)
             {
@@ -104,17 +105,22 @@ public class AStartMind : AbstractPathMind
 
             }
             CalculateCurrentTarget(itemNumber);
-            path = pathFinding.FindPath(CharacterPosition(), Enemies[itemNumber].CurrentPosition());
+            path = pathFinding.FindPath(CharacterPosition(), ItemsOnBoard[itemNumber].GetItemsPosition());
+            Debug.Log(ItemsOnBoard[itemNumber]);
         }
 
-        path = pathFinding.FindPath(CharacterPosition(), Exit);
+        else
+            path = pathFinding.FindPath(CharacterPosition(), Exit);
     }
 
     public Vector2[] PopulateItemsList()
     {
-        return FindObjectsOfType<ItemLogic>(true).Select(x => (Vector2)x.transform.position).ToArray();
+        var itemArray = GameObject.FindGameObjectsWithTag("Item");
+        itemsList.Clear();
+        Vector2[] itemPositions = itemArray.Select(item => (Vector2)item.transform.position).ToArray();
+        itemsList.AddRange(itemArray);
+        return itemPositions;
     }
-
     private void CalculateCurrentTarget(int targetNumber)
     {
         var enemies = BoardInfo.Enemies;
@@ -157,7 +163,9 @@ public class AStartMind : AbstractPathMind
             default:
                 break;
         }
+
         GetPath();
+
         switch (direccion)
         {
             case 1:
@@ -174,8 +182,4 @@ public class AStartMind : AbstractPathMind
 
         }
     }
-
-
-
-    
 }

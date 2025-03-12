@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq; // Agrega esta línea para usar LINQ
 using UnityEngine;
 
 namespace Assets.Scripts.DataStructures
@@ -20,10 +21,21 @@ namespace Assets.Scripts.DataStructures
 
         public CellInfo GetItemsPosition()
         {
-            var items = aStartMind.PopulateItemsList();
-            return null;
-        }
+            var itemObjects = GameObject.FindGameObjectsWithTag("Item");
+            var itemPositions = new List<CellInfo>();
+            foreach (var item in itemObjects)
+            {
+                var itemLogic = item.GetComponent<ItemLogic>();
+                if (itemLogic != null)
+                {
+                    itemPositions.Add(new CellInfo((int)item.transform.position.x, (int)item.transform.position.y));
+                }
+            }
 
+            var itemPositionsArray = itemPositions.ToArray();
+            Debug.Log($"Número de posiciones almacenadas: {itemPositionsArray.Length}");
+            return itemPositions.FirstOrDefault();
+        }
         public PlaceableItem(string tag, ItemType type)
         {
             this.Tag = tag;
@@ -44,7 +56,7 @@ namespace Assets.Scripts.DataStructures
                 case ItemType.Goal:
                     tileType = boardManager.exit;
                     break;
-                    
+
                 case ItemType.Lever:
                     tileType = boardManager.leverTile;
                     break;
@@ -55,8 +67,8 @@ namespace Assets.Scripts.DataStructures
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
-            var go = GameObject.Instantiate(tileType, new Vector3(0, 0, 0f),               
+
+            var go = GameObject.Instantiate(tileType, new Vector3(0, 0, 0f),
                 Quaternion.identity, parent);
             go.transform.parent = parent;
             go.transform.localPosition = Vector3.zero;

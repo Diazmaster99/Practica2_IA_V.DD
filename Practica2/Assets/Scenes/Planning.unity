@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterBehaviour: {fileID: 514944288}
+  itemsList: []
 --- !u!1 &760955683
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,6 +347,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114000014275070942, guid: 6d072085023a9cc469645640b49ab789, type: 3}
       propertyPath: keyControl
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114932959840203910, guid: 6d072085023a9cc469645640b49ab789, type: 3}
+      propertyPath: direction
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
