@@ -51,6 +51,8 @@ public class AStartMind : AbstractPathMind
                 path = pathFinding.FindPath_BFS(this.BoardInfo._grid[0], Exit);
                 break;
         }
+
+        PopulateItemsList();
     }
 
     private void PathFindingEnemies(PathFinding pathFinding)
@@ -83,7 +85,6 @@ public class AStartMind : AbstractPathMind
     {
         float _cost = 0;
         float _newCost = 0;
-        int itemIndex;
         GameObject[] items = PopulateItemsList();
         int itemNumber = items.Length;
 
@@ -93,19 +94,19 @@ public class AStartMind : AbstractPathMind
             {
                 _cost = pathFinding.CalculateDistanceCost(CharacterPosition(), ItemsOnBoard[i].GetItemsPosition());
 
-                if (_newCost > _cost)
-                {
-                    i++;
-                }
+                if (_newCost > _cost) i++;
+
                 else
                 {
                     _newCost = _cost;
                     itemNumber = i;
                 }
+
             }
             CalculateCurrentTarget(itemNumber);
             path = pathFinding.FindPath(CharacterPosition(), Enemies[itemNumber].CurrentPosition());
         }
+
         path = pathFinding.FindPath(CharacterPosition(), Exit);
     }
 
