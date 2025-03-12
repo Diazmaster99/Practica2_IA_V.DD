@@ -4,7 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AStartMind : AbstractPathMind
 {
@@ -23,27 +25,28 @@ public class AStartMind : AbstractPathMind
     void Start()
     {
         pathFinding = new PathFinding(BoardInfo);
-        int _object = 0;
+        //int _object = 0;
+        string sceneName = SceneManager.GetActiveScene().name;
 
-        if (Enemies.Count != 0)
-        {
-            Debug.LogWarning("Enemies.Count: " + Enemies.Count);
-            _object = 1;
-        }
-        if (ItemsOnBoard.Count != 0)
-        {
-            Debug.LogWarning("ItemCount: " + ItemsOnBoard.Count);
-            _object = 2;
-        }
+        //if (Enemies.Count != 0)
+        //{
+        //    Debug.LogWarning("Enemies.Count: " + Enemies.Count);
+        //    _object = 1;
+        //}
+        //if (ItemsOnBoard.Count != 0)
+        //{
+        //    Debug.LogWarning("ItemCount: " + ItemsOnBoard.Count);
+        //    _object = 2;
+        //}
 
-        Debug.LogWarning("_object: " + _object);
-
-        switch (0)
+        Debug.LogWarning("sceneName: " + sceneName);
+       
+        switch (sceneName)
         {
-            case 1:
+            case "Enemies":
                 PathFindingEnemies(pathFinding);
                 break;
-            case 2:
+            case "Planning":
                 PathFindingItems(pathFinding);
                 break;
             default:
@@ -77,7 +80,8 @@ public class AStartMind : AbstractPathMind
             }
             CalculateCurrentTarget(enemyNumber);
             path = pathFinding.FindPath(CharacterPosition(), Enemies[enemyNumber].CurrentPosition());
-        } while (Enemies.Count == 0);
+            print(Enemies[enemyNumber].CurrentPosition());
+        } while (Enemies.Count != 0);
         path = pathFinding.FindPath(CharacterPosition(), Exit);
     }
 
@@ -85,7 +89,7 @@ public class AStartMind : AbstractPathMind
     {
         float _cost = 0;
         float _newCost = 0;
-        GameObject[] items = PopulateItemsList();
+        var items = PopulateItemsList();
         int itemNumber = items.Length;
 
         while (itemNumber >= 0)
@@ -110,12 +114,9 @@ public class AStartMind : AbstractPathMind
         path = pathFinding.FindPath(CharacterPosition(), Exit);
     }
 
-    public GameObject[] PopulateItemsList()
+    public Vector2[] PopulateItemsList()
     {
-        GameObject[] itemArray = GameObject.FindGameObjectsWithTag("Item");
-        itemsList.Clear();
-        itemsList.AddRange(itemArray);
-        return itemArray;
+        return FindObjectsOfType<ItemLogic>(true).Select(x => (Vector2)x.transform.position).ToArray();
     }
 
     private void CalculateCurrentTarget(int targetNumber)

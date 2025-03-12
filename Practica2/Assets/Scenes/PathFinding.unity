@@ -194,6 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterBehaviour: {fileID: 1940137466}
+  itemsList: []
 --- !u!1 &760955683
 GameObject:
   m_ObjectHideFlags: 0

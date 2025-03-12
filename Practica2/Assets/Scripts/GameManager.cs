@@ -11,6 +11,7 @@ namespace Assets.Scripts
         public int seed=2020;
         public bool ForPlanner = false;
         public int numEnemies;
+        private CharacterBehaviour characterBehaviour;
 
         public List<GameObject> ActiveEnemies ;
 
@@ -34,15 +35,15 @@ namespace Assets.Scripts
             //Get a component reference to the attached BoardManager script
             this.BoardManager = GetComponent<BoardManager>();
 
+            characterBehaviour = GameObject.Find("Character").GetComponent<CharacterBehaviour>();
+            characterBehaviour.BoardManager= BoardManager;
             
         }
 
         public void Start()
         {
+            characterBehaviour.SetCurrentTarget(BoardManager.boardInfo.Exit);
             
-            var character= GameObject.Find("Character").GetComponent<CharacterBehaviour>();
-            character.BoardManager= BoardManager;
-            character.SetCurrentTarget(BoardManager.boardInfo.Exit);
         }
 
         //Initializes the game for each level.

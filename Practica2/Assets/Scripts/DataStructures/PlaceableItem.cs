@@ -20,7 +20,7 @@ namespace Assets.Scripts.DataStructures
 
         public CellInfo GetItemsPosition()
         {
-            GameObject[] items = aStartMind.PopulateItemsList();
+            var items = aStartMind.PopulateItemsList();
             return null;
         }
 
