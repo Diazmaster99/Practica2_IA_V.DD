@@ -20,27 +20,22 @@ public class AStartMind : AbstractPathMind
     private List<EnemyBehaviour> Enemies => this.BoardInfo.Enemies;
     private List<PlaceableItem> ItemsOnBoard => this.BoardInfo.ItemsOnBoard;
     public List<GameObject> itemsList = new List<GameObject>();
+    private string sceneName;
 
     // Start is called before the first frame update
     void Start()
     {
         pathFinding = new PathFinding(BoardInfo);
         //int _object = 0;
-        string sceneName = SceneManager.GetActiveScene().name;
+        sceneName = SceneManager.GetActiveScene().name;
+        GetPath();
+        Debug.LogWarning(Enemies.Count);
 
-        //if (Enemies.Count != 0)
-        //{
-        //    Debug.LogWarning("Enemies.Count: " + Enemies.Count);
-        //    _object = 1;
-        //}
-        //if (ItemsOnBoard.Count != 0)
-        //{
-        //    Debug.LogWarning("ItemCount: " + ItemsOnBoard.Count);
-        //    _object = 2;
-        //}
-
+        PopulateItemsList();
+    }
+    private void GetPath()
+    {
         Debug.LogWarning("sceneName: " + sceneName);
-       
         switch (sceneName)
         {
             case "Enemies":
@@ -54,8 +49,6 @@ public class AStartMind : AbstractPathMind
                 path = pathFinding.FindPath_BFS(this.BoardInfo._grid[0], Exit);
                 break;
         }
-
-        PopulateItemsList();
     }
 
     private void PathFindingEnemies(PathFinding pathFinding)
@@ -63,7 +56,8 @@ public class AStartMind : AbstractPathMind
         float _cost = 0;
         float _newCost = 0;
         int enemyNumber = 0;
-        do
+        
+        if(Enemies.Count != 0)
         {
             for (var i = 0; i < Enemies.Count; i++)
             {
@@ -80,9 +74,11 @@ public class AStartMind : AbstractPathMind
             }
             CalculateCurrentTarget(enemyNumber);
             path = pathFinding.FindPath(CharacterPosition(), Enemies[enemyNumber].CurrentPosition());
-            print(Enemies[enemyNumber].CurrentPosition());
-        } while (Enemies.Count != 0);
-        path = pathFinding.FindPath(CharacterPosition(), Exit);
+        }
+        else
+        {
+            path = pathFinding.FindPath(CharacterPosition(), Exit);
+        }
     }
 
     private void PathFindingItems(PathFinding pathFinding)
@@ -140,8 +136,8 @@ public class AStartMind : AbstractPathMind
     public override Locomotion.MoveDirection GetNextMove(BoardInfo boardInfo, CellInfo currentPos, CellInfo[] goals)
     {
         int direccion = 0;
-
-        if (pathNextCell < path.Count)
+       
+        if (path!=null && pathNextCell < path.Count)
         {
             Debug.Log("CurrentPos" + currentPos.CellId + " Path Cell" + path[pathNextCell].CellId);
             if (currentPos.RowId < path[pathNextCell].RowId) direccion = 1;
@@ -152,12 +148,26 @@ public class AStartMind : AbstractPathMind
             pathNextCell = pathNextCell + 1;
         }
 
+        switch(sceneName)
+        {
+            case "Enemies":
+                GetPath();
+                Debug.LogWarning(Enemies.Count);
+                break;
+            default:
+                break;
+        }
+        GetPath();
         switch (direccion)
         {
-            case 1: return Locomotion.MoveDirection.Up;
-            case 2: return Locomotion.MoveDirection.Down;
-            case 3: return Locomotion.MoveDirection.Right;
-            case 4: return Locomotion.MoveDirection.Left;
+            case 1:
+                return Locomotion.MoveDirection.Up; 
+            case 2:
+                return Locomotion.MoveDirection.Down;
+            case 3: 
+                return Locomotion.MoveDirection.Right;
+            case 4:
+                return Locomotion.MoveDirection.Left;
             default:
                 print("No move");
                 return Locomotion.MoveDirection.None;
@@ -167,9 +177,5 @@ public class AStartMind : AbstractPathMind
 
 
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
