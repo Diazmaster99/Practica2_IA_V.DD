@@ -22,11 +22,6 @@ namespace Assets.Scripts.DataStructures
         public CellInfo GetItemsPosition()
         {
             var boardManager = GameObject.FindObjectOfType<BoardManager>();
-            if (boardManager == null || boardManager.boardInfo == null)
-            {
-                Debug.LogError("BoardManager o boardInfo no encontrado.");
-                return null;
-            }
 
             var itemObjects = GameObject.FindGameObjectsWithTag("Item");
             List<ItemLogic> itemLogics = new List<ItemLogic>();
@@ -67,11 +62,9 @@ namespace Assets.Scripts.DataStructures
 
             if (orderedItems.Count == 0)
             {
-                Debug.LogError("No se encontraron ítems para procesar.");
                 return null;
             }
 
-            Debug.Log("Orden de los ítems:");
             foreach (var item in orderedItems)
             {
                 Debug.Log(item.Tag);
@@ -80,8 +73,6 @@ namespace Assets.Scripts.DataStructures
             var firstItem = orderedItems.First();
             int x = (int)firstItem.transform.position.x;
             int y = (int)firstItem.transform.position.y;
-
-            Debug.Log($"Primer ítem a recoger: {firstItem.Tag} en posición ({x}, {y})");
 
             return boardManager.boardInfo.CellInfos[x, y];
         }

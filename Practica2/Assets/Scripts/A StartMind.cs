@@ -21,6 +21,7 @@ public class AStartMind : AbstractPathMind
     private List<PlaceableItem> ItemsOnBoard => this.BoardInfo.ItemsOnBoard;
     public List<GameObject> itemsList = new List<GameObject>();
     private string sceneName;
+    private int currentItemIndex = -1;
 
     // Start is called before the first frame update
     void Start()
