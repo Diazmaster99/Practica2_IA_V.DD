@@ -27,9 +27,7 @@ public class AStartMind : AbstractPathMind
     {
         pathFinding = new PathFinding(BoardInfo);
         //int _object = 0;
-        sceneName = SceneManager.GetActiveScene().name;
-        GetPath();
-        Debug.LogWarning(Enemies.Count);
+        sceneName = SceneManager.GetActiveScene().name;    
 
         PopulateItemsList();
     }
@@ -45,15 +43,11 @@ public class AStartMind : AbstractPathMind
                 break;
             default:
                 path = pathFinding.FindPath(CharacterPosition(), Exit);
-                for (int i = 0; i < path.Count; i++)
-                {
-                    Debug.LogWarning(path[i].CellId);
-
-                }
                 //path = pathFinding.FindPath_BFS(CharacterPosition(), Exit);
                 break;
         }
     }
+
 
     private void PathFindingEnemies(PathFinding pathFinding)
     {
@@ -65,8 +59,17 @@ public class AStartMind : AbstractPathMind
         {
             for (var i = 0; i < Enemies.Count; i++)
             {
-                _cost = pathFinding.CalculateDistanceCost(CharacterPosition(), Enemies[i].CurrentPosition());
-                if (_newCost < _cost)
+                if (Enemies.Count != 0 && i < Enemies.Count - 1)
+                {
+                    _cost = pathFinding.CalculateDistanceCost(CharacterPosition(), Enemies[i].CurrentPosition());
+                    _newCost = pathFinding.CalculateDistanceCost(CharacterPosition(), Enemies[i + 1].CurrentPosition());
+                }
+                else
+                {
+                    _cost = pathFinding.CalculateDistanceCost(CharacterPosition(), Enemies[0].CurrentPosition());
+
+                }
+                if (_newCost > _cost)
                 {
                     i++;
                 }
@@ -76,20 +79,15 @@ public class AStartMind : AbstractPathMind
                     enemyNumber = i;
                 }
             }
+
             CalculateCurrentTarget(enemyNumber);
             path = pathFinding.FindPath(CharacterPosition(), Enemies[enemyNumber].CurrentPosition());
             //path = pathFinding.FindPath_BFS(CharacterPosition(), Enemies[enemyNumber].CurrentPosition());
-            Debug.LogWarning(Enemies[enemyNumber]);
         }
         else
         {
             path = pathFinding.FindPath(CharacterPosition(), Exit);
             //path = pathFinding.FindPath_BFS(CharacterPosition(), Exit);
-            for (int i = 0; i < path.Count; i++)
-            {
-                Debug.LogWarning(path[i].CellId);
-
-            }
         }
     }
 
@@ -165,7 +163,6 @@ public class AStartMind : AbstractPathMind
         }
             
     }
-
     public override Locomotion.MoveDirection GetNextMove(BoardInfo boardInfo, CellInfo currentPos, CellInfo[] goals)
     {
         int direccion = 0;
@@ -182,8 +179,6 @@ public class AStartMind : AbstractPathMind
 
         if (path != null && pathNextCell < path.Count)
         {
-            Debug.Log("CurrentPos" + currentPos.CellId + " Path Cell" + path[pathNextCell].CellId);
-            Debug.Log("PathNextCell" + pathNextCell);
             if (currentPos.RowId < path[1].RowId) direccion = 1;
             if (currentPos.RowId > path[1].RowId) direccion = 2;
             if (currentPos.ColumnId < path[1].ColumnId) direccion = 3;
