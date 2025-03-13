@@ -21,21 +21,71 @@ namespace Assets.Scripts.DataStructures
 
         public CellInfo GetItemsPosition()
         {
+            var boardManager = GameObject.FindObjectOfType<BoardManager>();
+            if (boardManager == null || boardManager.boardInfo == null)
+            {
+                Debug.LogError("BoardManager o boardInfo no encontrado.");
+                return null;
+            }
+
             var itemObjects = GameObject.FindGameObjectsWithTag("Item");
-            var itemPositions = new List<CellInfo>();
+            List<ItemLogic> itemLogics = new List<ItemLogic>();
+
             foreach (var item in itemObjects)
             {
                 var itemLogic = item.GetComponent<ItemLogic>();
                 if (itemLogic != null)
                 {
-                    itemPositions.Add(new CellInfo((int)item.transform.position.x, (int)item.transform.position.y));
+                    itemLogics.Add(itemLogic);
                 }
             }
 
-            var itemPositionsArray = itemPositions.ToArray();
-            Debug.Log($"Número de posiciones almacenadas: {itemPositionsArray.Length}");
-            return itemPositions.FirstOrDefault();
+            List<ItemLogic> orderedItems = new List<ItemLogic>();
+            HashSet<ItemLogic> processedItems = new HashSet<ItemLogic>();
+
+            void AddItemInOrder(ItemLogic item)
+            {
+                if (processedItems.Contains(item)) return;
+
+                foreach (var precondition in item.PlaceableItem.Preconditions)
+                {
+                    var requiredItem = itemLogics.FirstOrDefault(i => i.PlaceableItem == precondition);
+                    if (requiredItem != null)
+                    {
+                        AddItemInOrder(requiredItem);
+                    }
+                }
+
+                processedItems.Add(item);
+                orderedItems.Add(item);
+            }
+
+            foreach (var item in itemLogics)
+            {
+                AddItemInOrder(item);
+            }
+
+            if (orderedItems.Count == 0)
+            {
+                Debug.LogError("No se encontraron ítems para procesar.");
+                return null;
+            }
+
+            Debug.Log("Orden de los ítems:");
+            foreach (var item in orderedItems)
+            {
+                Debug.Log(item.Tag);
+            }
+
+            var firstItem = orderedItems.First();
+            int x = (int)firstItem.transform.position.x;
+            int y = (int)firstItem.transform.position.y;
+
+            Debug.Log($"Primer ítem a recoger: {firstItem.Tag} en posición ({x}, {y})");
+
+            return boardManager.boardInfo.CellInfos[x, y];
         }
+
         public PlaceableItem(string tag, ItemType type)
         {
             this.Tag = tag;
