@@ -53,10 +53,6 @@ namespace Assets.Scripts
             //Call the SetupScene function of the BoardManager script, pass it current level number.
             BoardManager.SetupScene(this.seed, this.ForPlanner,numEnemies);
             BoardManager.GenerateMap();
-
-            
         }
-
-    
     }
 }

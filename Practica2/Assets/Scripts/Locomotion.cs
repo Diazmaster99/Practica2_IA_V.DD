@@ -137,14 +137,8 @@ namespace Assets.Scripts
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("NewDirection "+newDirection);
-            }
-           //this.direction = newDirection;   
+            }   
         }
-        //public MoveDirection GetNextDirection() 
-        //{
-        //    return direction;
-        //}
-        // Update is called once per frame
         void Update()
         {
             if (end == null) return;

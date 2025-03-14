@@ -69,6 +69,7 @@ public class AStartMind : AbstractPathMind
                     _cost = pathFinding.CalculateDistanceCost(CharacterPosition(), Enemies[0].CurrentPosition());
 
                 }
+
                 if (_newCost > _cost)
                 {
                     i++;
@@ -117,17 +118,18 @@ public class AStartMind : AbstractPathMind
 
             if (CharacterPosition() == (ItemsOnBoard[itemNumber].GetItemsPosition()))
             {
-                Debug.Log("Siguiente item");
                 itemNumber--;
             }
 
             CalculateCurrentTarget(itemNumber);
             path = pathFinding.FindPath(CharacterPosition(), ItemsOnBoard[itemNumber].GetItemsPosition());
+            //path = pathFinding.FindPath_BFS(CharacterPosition(), ItemsOnBoard[itemNumber].GetItemsPosition());
         }
 
         else
         {
             path = pathFinding.FindPath(CharacterPosition(), Exit);
+            //path = pathFinding.FindPath_BFS(CharacterPosition(), Exit);
         }
     }
 
@@ -144,8 +146,6 @@ public class AStartMind : AbstractPathMind
         var enemies = BoardInfo.Enemies;
         if(enemies.Any())
         {
-            //Coger al enemigo mas cercano 
-            //currentTarget = ese enemigo mas cercano
             this.character.SetCurrentTarget(Enemies[targetNumber].CurrentPosition());
         }
         else
@@ -191,7 +191,6 @@ public class AStartMind : AbstractPathMind
             case 4:
                 return Locomotion.MoveDirection.Left;
             default:
-                print("No move");
                 return Locomotion.MoveDirection.None;
 
         }
