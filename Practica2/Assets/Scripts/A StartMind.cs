@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -116,17 +115,10 @@ public class AStartMind : AbstractPathMind
                 }
             }
 
-            if (CharacterPosition().Equals(ItemsOnBoard[itemNumber].GetItemsPosition()))
+            if (CharacterPosition() == (ItemsOnBoard[itemNumber].GetItemsPosition()))
             {
                 Debug.Log("Siguiente item");
                 itemNumber--;
-
-                if (itemNumber < 0)
-                {
-                    Debug.Log("Se han recogido todos los items");
-                    path = pathFinding.FindPath(CharacterPosition(), Exit);
-                    return;
-                }
             }
 
             CalculateCurrentTarget(itemNumber);
